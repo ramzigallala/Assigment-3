@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 
 public class ReaderActor extends AbstractActor {
-    //TODO fare il messsaggio di start per prendere il riferimento all'attore classifica, solo la prima volta
+    //TODO fare il messaggio di start per prendere il riferimento all'attore classifica, solo la prima volta
     @Override
     public Receive createReceive() {
         return receiveBuilder()
