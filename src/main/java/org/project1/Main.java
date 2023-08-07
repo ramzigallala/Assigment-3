@@ -11,8 +11,8 @@ public class Main {
 
     public static void main(String[] args) {
         //final File dir = new File("C:\\Users\\mikim\\Desktop\\prova");
-        final File dir = new File("D:\\Desktop\\PCD\\prova");
-        //final File dir = new File("D:\\Desktop\\PCD\\TestFolder2");
+        //final File dir = new File("D:\\Desktop\\PCD\\prova");
+        final File dir = new File("D:\\Desktop\\PCD\\TestFolder2");
         final ActorSystem system = ActorSystem.create("myActorSystem");
         final ActorRef bootActor = system.actorOf(Props.create(BootActor.class), "bootActor");
         bootActor.tell(new BootActor.BootMsg(dir), null);

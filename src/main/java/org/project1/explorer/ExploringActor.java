@@ -2,6 +2,7 @@ package org.project1.explorer;
 
 import akka.actor.AbstractActor;
 import akka.actor.ActorRef;
+import org.project1.rank.RankActorProtocol;
 import org.project1.reader.ReaderActorProtocol;
 
 import java.io.File;
@@ -13,14 +14,7 @@ public class ExploringActor extends AbstractActor {
     private long numFiles=0;
     private ActorRef readerActor;
     private ActorRef rankActor;
-/*
-    @Override
-    public Receive createReceive() {
-        return receiveBuilder()
-                .match(ExploringActorProtocol.receiveMsg.class, this::onReceiveMsg)
-                .build();
-    }
-*/
+
     @Override
     public Receive createReceive() {
         return receiveBuilder()
@@ -48,9 +42,9 @@ public class ExploringActor extends AbstractActor {
                 this.dirCounter = this.dirCounter + 1;
                 this.getSelf().tell(new ExploringActorProtocol.receiveMsg(file), this.getSelf());
             } else if (file.getName().endsWith(".java")) {
-                //TODO la prima volta deve inviare il riferimento all'attore classifica, rankActor
                 //System.out.println(file.getPath());
                 this.numFiles= this.numFiles+1;
+                readerActor.tell(new ReaderActorProtocol.startMsg(rankActor), this.getSelf());
                 readerActor.tell(new ReaderActorProtocol.receiveMsg(file), this.getSelf());
             }
         }
@@ -61,7 +55,7 @@ public class ExploringActor extends AbstractActor {
     private void checkEnd(){
         if(this.dirCounter==0){
             System.out.println("finito, numero file: "+this.numFiles);
-            //TODO inviare dato all'attore classifica
+            rankActor.tell(new RankActorProtocol.setNumElements(this.numFiles),this.getSelf());
         }
     }
 }

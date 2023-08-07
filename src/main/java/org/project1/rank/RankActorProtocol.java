@@ -1,7 +1,5 @@
 package org.project1.rank;
 
-import java.io.File;
-
 public class RankActorProtocol {
     public static class receiveMsg {
 
@@ -15,4 +13,16 @@ public class RankActorProtocol {
             return fileEntry;
         }
     }
+    public static class setNumElements {
+        private final long numElements;
+
+        public setNumElements(long numElements) {
+            this.numElements = numElements;
+        }
+
+        public long getNumElements() {
+            return this.numElements;
+        }
+    }
+
 }
