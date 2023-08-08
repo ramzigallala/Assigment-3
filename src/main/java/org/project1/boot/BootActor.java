@@ -6,37 +6,39 @@ import akka.actor.Props;
 import org.project1.explorer.ExploringActor;
 import org.project1.explorer.ExploringActorProtocol;
 import org.project1.rank.RankActor;
+import org.project1.rank.RankActorProtocol;
 import org.project1.reader.ReaderActor;
 
 import java.io.File;
 
 public class BootActor extends AbstractActor {
+    private int bucketsNum;
+    private int maxTopFiles;
+    private int bucketSize;
+    private File dir;
+
+    private final ActorRef explorerActor = this.getContext().actorOf(Props.create(ExploringActor.class), "ExploringActor");
+    private final ActorRef readerActor = this.getContext().actorOf(Props.create(ReaderActor.class), "ReaderActor");
+    private final ActorRef rankActor = this.getContext().actorOf(Props.create(RankActor.class), "RankActor");
 
     @Override
     public Receive createReceive() {
         return receiveBuilder()
-                .match(BootActor.BootMsg.class, this::onBoot)
+                .match(BootActorProtocol.BootMsg.class, this::onBoot)
+                .match(BootActorProtocol.StartExplorer.class, this::startExplorer)
                 .build();
     }
 
-    private void onBoot(BootMsg bootMsg) {
-        final ActorRef explorerActor = this.getContext().actorOf(Props.create(ExploringActor.class), "ExploringActor");
-        final ActorRef readerActor = this.getContext().actorOf(Props.create(ReaderActor.class), "ReaderActor");
-        final ActorRef rankActor = this.getContext().actorOf(Props.create(RankActor.class), "RankActor");
-        explorerActor.tell(new ExploringActorProtocol.startMsg(readerActor,rankActor), this.getSelf());
-        explorerActor.tell(new ExploringActorProtocol.receiveMsg(bootMsg.getDir()), this.getSelf());
+    private void startExplorer(BootActorProtocol.StartExplorer msg) {
+        explorerActor.tell(new ExploringActorProtocol.receiveMsg(this.dir), this.getSelf());
     }
 
-    public static class BootMsg {
-        private final File dir;
-
-        public BootMsg(File dir) {
-            this.dir = dir;
-        }
-
-        public File getDir() {
-            return dir;
-        }
-
+    private void onBoot(BootActorProtocol.BootMsg msg) {
+        this.bucketsNum = msg.getBucketsNumber();
+        this.maxTopFiles = msg.getMaxTopFiles();
+        this.bucketSize = msg.getBucketSize();
+        this.dir = msg.getDir();
+        explorerActor.tell(new ExploringActorProtocol.startMsg(readerActor,rankActor), this.getSelf());
+        rankActor.tell(new RankActorProtocol.startMsg(this.getSelf(), this.bucketsNum, this.maxTopFiles, this.bucketSize), this.getSelf());
     }
 }

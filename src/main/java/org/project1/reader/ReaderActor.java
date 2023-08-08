@@ -2,6 +2,8 @@ package org.project1.reader;
 
 import akka.actor.AbstractActor;
 import akka.actor.ActorRef;
+import org.project1.rank.FileEntry;
+import org.project1.rank.RankActorProtocol;
 
 import java.io.File;
 import java.io.IOException;
@@ -33,8 +35,7 @@ public class ReaderActor extends AbstractActor {
             String nameFile= file.getAbsolutePath();
             Long numLines = Files.lines(file.toPath()).count();
             //System.out.println(nameFile+" "+numLines);
-            //TODO fare o un messaggio di start oppure tramite costruttore ma con le giuste accortezze
-            //rankActor.tell(new RankActorProtocol.receiveMsg(file), this.getSelf());
+            rankActor.tell(new RankActorProtocol.receiveMsg(new FileEntry(nameFile, numLines)), this.getSelf());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
