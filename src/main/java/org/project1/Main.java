@@ -11,7 +11,7 @@ import java.io.File;
 public class Main {
 
     public static void main(String[] args) {
-        final File dir = new File("C:\\Users\\mikim\\Desktop");
+        final File dir = new File("C:\\Users\\mikim\\Desktop\\provaBuckets");
         //final File dir = new File("D:\\Desktop\\PCD\\prova");
         //final File dir = new File("D:\\Desktop\\PCD\\TestFolder2");
         final ActorSystem system = ActorSystem.create("myActorSystem");

@@ -37,7 +37,7 @@ public class RankActorProtocol {
             this.bootActor = bootActor;
             this.buckets = new int[bucketsNum];;
             this.maxTopFiles = maxTopFiles;
-            this.bucketSize = bucketSize;
+            this.bucketSize = bucketSize / (bucketsNum - 1) ;
         }
 
         public ActorRef getBootActor() {
