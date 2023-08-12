@@ -29,15 +29,21 @@ public class RankActorProtocol {
 
     public static class startMsg {
         private final ActorRef bootActor;
+        private final ActorRef viewActor;
         private final int[] buckets;
         private final int maxTopFiles;
         private final int bucketSize;
 
-        public startMsg(ActorRef bootActor, int bucketsNum, int maxTopFiles, int bucketSize) {
+        public startMsg(ActorRef bootActor, ActorRef viewActor, int bucketsNum, int maxTopFiles, int bucketSize) {
             this.bootActor = bootActor;
-            this.buckets = new int[bucketsNum];;
+            this.buckets = new int[bucketsNum];
             this.maxTopFiles = maxTopFiles;
-            this.bucketSize = bucketSize / (bucketsNum - 1) ;
+            this.bucketSize = bucketSize / (bucketsNum - 1);
+            this.viewActor = viewActor;
+        }
+
+        public ActorRef getViewActor() {
+            return viewActor;
         }
 
         public ActorRef getBootActor() {

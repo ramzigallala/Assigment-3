@@ -39,6 +39,6 @@ public class BootActor extends AbstractActor {
         this.bucketSize = msg.getBucketSize();
         this.dir = msg.getDir();
         explorerActor.tell(new ExploringActorProtocol.startMsg(readerActor,rankActor), this.getSelf());
-        rankActor.tell(new RankActorProtocol.startMsg(this.getSelf(), this.bucketsNum, this.maxTopFiles, this.bucketSize), this.getSelf());
+        rankActor.tell(new RankActorProtocol.startMsg(this.getSelf(), msg.getViewActor(), this.bucketsNum, this.maxTopFiles, this.bucketSize), this.getSelf());
     }
 }

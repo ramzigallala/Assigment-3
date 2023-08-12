@@ -1,6 +1,8 @@
 package org.project1.rank;
 
+import GUI.ViewActorProtocol;
 import akka.actor.AbstractActor;
+import akka.actor.ActorRef;
 import org.project1.boot.BootActorProtocol;
 import org.project1.explorer.ExploringActorProtocol;
 
@@ -16,6 +18,7 @@ public class RankActor extends AbstractActor {
     private int maxTopFiles;
     private int bucketSize;
     private Optional<Long> numElements=Optional.empty();
+    private ActorRef viewActor;
     @Override
     public Receive createReceive() {
         return receiveBuilder()
@@ -29,6 +32,7 @@ public class RankActor extends AbstractActor {
         this.maxTopFiles = msg.getMaxTopFiles();
         this.bucketSize = msg.getBucketSize();
         msg.getBootActor().tell(new BootActorProtocol.StartExplorer(), this.getSelf());
+        this.viewActor = msg.getViewActor();
     }
 
     private Receive receiverMsg() {
@@ -51,8 +55,9 @@ public class RankActor extends AbstractActor {
             this.files.remove(this.files.last());
         int bucketIdx = (int)Math.min((msg.getFileEntry().lines()) / this.bucketSize, this.buckets.length-1);
         this.buckets[bucketIdx]++;
+        this.viewActor.tell(new ViewActorProtocol.receiveResults(this.buckets, this.files), this.getSelf());
        // System.out.println(this.files.stream().toList());
-        Arrays.stream(this.buckets).asLongStream().forEach(System.out::println);
+        //Arrays.stream(this.buckets).asLongStream().forEach(System.out::println);
     }
 
 
