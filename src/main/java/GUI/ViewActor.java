@@ -17,14 +17,13 @@ public class ViewActor extends AbstractActor {
         }
 
     private void setResults(ViewActorProtocol.receiveResults msg) {
-        this.distributionArea.setText(msg.getDistributionArea().toString().replace("{", " ").replace("}", "").replace(",", "\n").replace("=", "... = "));
-        this.maxFilesArea.setText(msg.getMaxFilesArea().toString());
-        System.out.println("Setting");
+        distributionArea.setText(msg.getDistributionArea().toString().replace("{", " ").replace("}", "").replace(",", "\n").replace("=", "... = "));
+        maxFilesArea.setText(msg.getMaxFilesArea().toString());
     }
 
     private void onBoot(ViewActorProtocol.receivePanels msg) {
-        this.distributionArea = distributionArea;
-        this.maxFilesArea = maxFilesArea;
+        this.distributionArea = msg.getDistributionArea();
+        this.maxFilesArea = msg.getMaxFilesArea();
     }
 
 }
