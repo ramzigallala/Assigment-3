@@ -1,4 +1,4 @@
-package GUI;
+package org.project1.GUI;
 
 import akka.actor.AbstractActor;
 

@@ -1,14 +1,7 @@
 package org.project1;
 
-import GUI.AnalyserGUI;
-import akka.actor.ActorRef;
-import akka.actor.ActorSystem;
-import akka.actor.Props;
-import org.project1.boot.BootActor;
-import org.project1.boot.BootActorProtocol;
-
-import java.io.File;
-
+import org.project1.GUI.AnalyserGUI;
+//TODO cambiare la configurazione del sistem cosi da dargli un file di resource che non usa il cluster. Questo è da fare senno non funziona più il main dopo due start&stop
 public class Main {
 
     public static void main(String[] args) {

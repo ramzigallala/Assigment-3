@@ -1,9 +1,8 @@
-package GUI;
+package org.project1.GUI;
 
 import org.project1.rank.FileEntry;
 
 import javax.swing.*;
-import java.util.Map;
 import java.util.TreeSet;
 
 public class ViewActorProtocol {

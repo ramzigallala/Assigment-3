@@ -1,12 +1,10 @@
 package org.project1.rank;
 
-import GUI.ViewActorProtocol;
+import org.project1.GUI.ViewActorProtocol;
 import akka.actor.AbstractActor;
 import akka.actor.ActorRef;
 import org.project1.boot.BootActorProtocol;
-import org.project1.explorer.ExploringActorProtocol;
 
-import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Optional;
 import java.util.TreeSet;

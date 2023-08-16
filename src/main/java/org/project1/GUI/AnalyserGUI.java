@@ -1,4 +1,4 @@
-package GUI;
+package org.project1.GUI;
 
 import akka.actor.ActorRef;
 import akka.actor.ActorSystem;
@@ -9,12 +9,6 @@ import org.project1.boot.BootActorProtocol;
 import javax.swing.*;
 import java.awt.*;
 import java.io.File;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.HashMap;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
-import java.util.function.Supplier;
 
 import static java.lang.Integer.parseInt;
 
@@ -30,7 +24,7 @@ public class AnalyserGUI {
     private final JTextArea distributionArea;
 
     /**
-     * Creation of the GUI
+     * Creation of the org.project1.GUI
      */
     public AnalyserGUI() {
         JFrame frame = new JFrame("Java Walker");

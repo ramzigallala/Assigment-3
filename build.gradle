@@ -7,16 +7,25 @@ version '1.0-SNAPSHOT'
 
 repositories {
     mavenCentral()
+    maven {
+        url "https://repo.akka.io/maven"
+    }
 }
 
 dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
+    def versions = [
+            ScalaBinary: "2.13"
+    ]
 
     /* module 3.1 - actors - akka*/
     implementation platform("com.typesafe.akka:akka-bom_2.13:2.8.2")
     implementation "com.typesafe.akka:akka-actor-typed_2.13"
     testImplementation "com.typesafe.akka:akka-actor-testkit-typed_2.13"
+    implementation "com.typesafe.akka:akka-serialization-jackson_${versions.ScalaBinary}"
+
+    implementation "com.typesafe.akka:akka-cluster-typed_${versions.ScalaBinary}"
 }
 
 test {
