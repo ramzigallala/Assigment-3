@@ -50,7 +50,7 @@ public class AnalyserGUI {
         maxFilesField.setPreferredSize(new Dimension(100, 25));
 
         JLabel numIntervalsLabel = new JLabel("Num Intervals:");
-        numIntervalsField = new JTextField("10");
+        numIntervalsField = new JTextField("5");
         numIntervalsField.setPreferredSize(new Dimension(100, 25));
 
         JLabel maxLengthLabel = new JLabel("Max Length:");
@@ -178,7 +178,7 @@ public class AnalyserGUI {
         final ActorSystem system = ActorSystem.create("myActorSystem");
         final ActorRef bootActor = system.actorOf(Props.create(BootActor.class), "bootActor");
         final ActorRef viewActor = system.actorOf(Props.create(ViewActor.class),"viewActor");
-        viewActor.tell(new ViewActorProtocol.receivePanels(distributionArea, maxFilesArea), null);
+        viewActor.tell(new ViewActorProtocol.receivePanels(distributionArea, maxFilesArea, maxLines), null);
         bootActor.tell(new BootActorProtocol.BootMsg(numIntervals, maxFiles, maxLines, new File(directory), viewActor), null);
         /*futureEventBus.thenAcceptAsync(vertx -> {
             SwingUtilities.invokeLater(() -> {

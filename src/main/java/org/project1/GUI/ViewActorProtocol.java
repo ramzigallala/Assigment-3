@@ -28,10 +28,16 @@ public class ViewActorProtocol {
     public static class receivePanels{
         private final JTextArea distributionArea;
         private final JTextArea maxFilesArea;
+        private final int maxLines;
 
-        public receivePanels(JTextArea distributionArea, JTextArea maxFilesArea) {
+        public receivePanels(JTextArea distributionArea, JTextArea maxFilesArea, int maxLines) {
             this.distributionArea = distributionArea;
             this.maxFilesArea = maxFilesArea;
+            this.maxLines = maxLines;
+        }
+
+        public int getMaxLines() {
+            return maxLines;
         }
 
         public JTextArea getDistributionArea() {
