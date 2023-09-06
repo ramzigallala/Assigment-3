@@ -96,7 +96,7 @@ public class AnalyserGUI {
 
         stopButton = new JButton("Stop");
         stopButton.addActionListener(e -> stopWalker());
-        stopButton.setEnabled(true);
+        stopButton.setEnabled(false);
 
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         buttonPanel.add(startButton);
@@ -197,12 +197,14 @@ public class AnalyserGUI {
                 });
             });
         });*/
-        //startButton.setEnabled(false);
-        //stopButton.setEnabled(true);
+        startButton.setEnabled(false);
+        stopButton.setEnabled(true);
     }
 
     private void stopWalker() {
         system.terminate();
+        startButton.setEnabled(true);
+        stopButton.setEnabled(false);
     }
 
     private void showErrorDialog(String message) {
