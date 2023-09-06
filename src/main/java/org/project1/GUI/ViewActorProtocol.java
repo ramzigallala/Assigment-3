@@ -3,15 +3,16 @@ package org.project1.GUI;
 import org.project1.rank.FileEntry;
 
 import javax.swing.*;
+import java.util.List;
 import java.util.TreeSet;
 
 public class ViewActorProtocol {
 
     public static class receiveResults {
         private final int[] distributionArea;
-        private final TreeSet<FileEntry> maxFilesArea;
+        private final List<FileEntry> maxFilesArea;
 
-        public receiveResults(int[] distributionArea, TreeSet<FileEntry> maxFilesArea) {
+        public receiveResults(int[] distributionArea, List<FileEntry> maxFilesArea) {
             this.distributionArea = distributionArea;
             this.maxFilesArea = maxFilesArea;
         }
@@ -20,7 +21,7 @@ public class ViewActorProtocol {
             return distributionArea;
         }
 
-        public TreeSet<FileEntry> getMaxFilesArea() {
+        public List<FileEntry> getMaxFilesArea() {
             return maxFilesArea;
         }
     }
