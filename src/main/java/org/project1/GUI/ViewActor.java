@@ -20,12 +20,12 @@ public class ViewActor extends AbstractActor {
         }
 
     private void setResults(ViewActorProtocol.receiveResults msg) {
-        var buckets = msg.getDistributionArea();
+        var buckets = msg.getBuckets();
         String results = IntStream.range(0, buckets.length)
                 .mapToObj(i -> (maxLines - (i*(maxLines/ (buckets.length - 1)))) + "..."  + " : " + buckets[i])
                 .collect(Collectors.joining("\n"));
         distributionArea.setText(results);
-        maxFilesArea.setText(msg.getMaxFilesArea().stream().map(e -> e.lines() + ": " + e.name()).toList().toString().replace(",", "\n"));
+        maxFilesArea.setText(msg.getFiles().stream().map(e -> e.lines() + ": " + e.name()).toList().toString().replace(",", "\n"));
     }
 
     private void onBoot(ViewActorProtocol.receivePanels msg) {

@@ -4,25 +4,24 @@ import org.project1.rank.FileEntry;
 
 import javax.swing.*;
 import java.util.List;
-import java.util.TreeSet;
 
 public class ViewActorProtocol {
 
     public static class receiveResults {
-        private final int[] distributionArea;
-        private final List<FileEntry> maxFilesArea;
+        private final int[] buckets;
+        private final List<FileEntry> files;
 
         public receiveResults(int[] distributionArea, List<FileEntry> maxFilesArea) {
-            this.distributionArea = distributionArea;
-            this.maxFilesArea = maxFilesArea;
+            this.buckets = distributionArea;
+            this.files = maxFilesArea;
         }
 
-        public int[] getDistributionArea() {
-            return distributionArea;
+        public int[] getBuckets() {
+            return buckets;
         }
 
-        public List<FileEntry> getMaxFilesArea() {
-            return maxFilesArea;
+        public List<FileEntry> getFiles() {
+            return files;
         }
     }
 

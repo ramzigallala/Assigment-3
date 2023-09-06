@@ -3,6 +3,8 @@ package org.project1.GUI;
 import akka.actor.ActorRef;
 import akka.actor.ActorSystem;
 import akka.actor.Props;
+import com.typesafe.config.Config;
+import com.typesafe.config.ConfigFactory;
 import org.project1.boot.BootActor;
 import org.project1.boot.BootActorProtocol;
 
@@ -22,6 +24,7 @@ public class AnalyserGUI {
     private final JButton stopButton;
     private final JTextArea maxFilesArea;
     private final JTextArea distributionArea;
+    private ActorSystem system;
 
     /**
      * Creation of the org.project1.GUI
@@ -93,7 +96,7 @@ public class AnalyserGUI {
 
         stopButton = new JButton("Stop");
         stopButton.addActionListener(e -> stopWalker());
-        stopButton.setEnabled(false);
+        stopButton.setEnabled(true);
 
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         buttonPanel.add(startButton);
@@ -174,8 +177,8 @@ public class AnalyserGUI {
             showErrorDialog("Invalid value for num intervals: " + numIntervalsField.getText().trim());
             return;
         }
-
-        final ActorSystem system = ActorSystem.create("myActorSystem");
+        Config customConf = ConfigFactory.load("reference.conf");
+        system = ActorSystem.create("myActorSystem", customConf);
         final ActorRef bootActor = system.actorOf(Props.create(BootActor.class), "bootActor");
         final ActorRef viewActor = system.actorOf(Props.create(ViewActor.class),"viewActor");
         viewActor.tell(new ViewActorProtocol.receivePanels(distributionArea, maxFilesArea, maxLines), null);
@@ -193,12 +196,13 @@ public class AnalyserGUI {
                     maxFilesArea.setText((topFiles.toString()));
                 });
             });
-        });
-        startButton.setEnabled(false);
-        stopButton.setEnabled(true);*/
+        });*/
+        //startButton.setEnabled(false);
+        //stopButton.setEnabled(true);
     }
 
     private void stopWalker() {
+        system.terminate();
     }
 
     private void showErrorDialog(String message) {
