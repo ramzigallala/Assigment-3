@@ -54,7 +54,7 @@ public class ExploringActor extends AbstractActor {
 
     private void checkEnd(){
         if(this.dirCounter==0){
-            System.out.println("finito, numero file: "+this.numFiles);
+            //System.out.println("finito, numero file: "+this.numFiles);
             rankActor.tell(new RankActorProtocol.setNumElements(this.numFiles),this.getSelf());
         }
     }

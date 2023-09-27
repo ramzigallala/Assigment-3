@@ -44,7 +44,9 @@ public class RankActor extends AbstractActor {
     private void setNumElements(RankActorProtocol.setNumElements msg) {
         if(numElements.isEmpty())
             this.numElements=Optional.of(msg.getNumElements());
-        System.out.println("rank "+this.numElements.get());
+        //System.out.println("rank "+this.numElements.get());
+        //elementi totali
+        viewActor.tell(new ViewActorProtocol.setNumElements(msg.getNumElements()),this.getSelf());
     }
 
     private void onReceiveMsg(RankActorProtocol.receiveMsg msg) {

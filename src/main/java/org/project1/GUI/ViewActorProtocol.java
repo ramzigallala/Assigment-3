@@ -48,4 +48,28 @@ public class ViewActorProtocol {
             return maxFilesArea;
         }
     }
+    public static class consoleInfo{
+        private final int maxLines;
+
+        public consoleInfo(int maxLines) {
+            this.maxLines = maxLines;
+        }
+
+        public int getMaxLines() {
+            return maxLines;
+        }
+    }
+
+    public static class setNumElements {
+        private final long numElements;
+
+        public setNumElements(long numElements) {
+            this.numElements = numElements;
+        }
+
+        public long getNumElements() {
+            return this.numElements;
+        }
+    }
+
 }
