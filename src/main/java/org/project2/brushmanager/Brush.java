@@ -7,6 +7,8 @@ import akka.actor.typed.javadsl.Behaviors;
 import akka.actor.typed.javadsl.Receive;
 
 public class Brush extends AbstractBehavior<BrushProtocols> {
+    private int x, y;
+    private int color;
     public Brush(ActorContext<BrushProtocols> context) {
         super(context);
     }
@@ -14,19 +16,27 @@ public class Brush extends AbstractBehavior<BrushProtocols> {
     @Override
     public Receive<BrushProtocols> createReceive() {
         return newReceiveBuilder()
-                .onMessage(BrushProtocols.UpdatePositionMsg.class, this::bootMsg)
+                .onMessage(BrushProtocols.BootMsg.class, this::bootMsg)
                 .onMessage(BrushProtocols.UpdatePositionMsg.class, this::positionMsg)
                 .onMessage(BrushProtocols.UpdateColorMsg.class, this::colorMsg)
                 .build();
     }
 
-    private Behavior<BrushProtocols> positionMsg(BrushProtocols.UpdatePositionMsg msg) {
+    private Behavior<BrushProtocols> bootMsg(BrushProtocols.BootMsg msg) {
+        this.x=msg.getX();
+        this.y= msg.getY();
+        this.color= msg.getColor();
+        return this;
+    }
 
+    private Behavior<BrushProtocols> positionMsg(BrushProtocols.UpdatePositionMsg msg) {
+        this.x= msg.getX();
+        this.y= msg.getY();
         return this;
     }
 
     private Behavior<BrushProtocols> colorMsg(BrushProtocols.UpdateColorMsg msg) {
-
+        this.color= msg.getColor();
         return this;
     }
 
