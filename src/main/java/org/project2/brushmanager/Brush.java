@@ -7,8 +7,7 @@ import akka.actor.typed.javadsl.Behaviors;
 import akka.actor.typed.javadsl.Receive;
 
 public class Brush extends AbstractBehavior<BrushProtocols> {
-    private int x, y;
-    private int color;
+    private BrushInfo brushInfo;
     public Brush(ActorContext<BrushProtocols> context) {
         super(context);
     }
@@ -23,20 +22,18 @@ public class Brush extends AbstractBehavior<BrushProtocols> {
     }
 
     private Behavior<BrushProtocols> bootMsg(BrushProtocols.BootMsg msg) {
-        this.x=msg.getX();
-        this.y= msg.getY();
-        this.color= msg.getColor();
+        brushInfo = new BrushInfo(msg.getX(), msg.getY(), msg.getColor());
+        msg.getBrushManager().tell(new BrushManagerProtocols.AddBrushMsg(brushInfo));
         return this;
     }
 
     private Behavior<BrushProtocols> positionMsg(BrushProtocols.UpdatePositionMsg msg) {
-        this.x= msg.getX();
-        this.y= msg.getY();
+        brushInfo.setPosition(msg.getX(), msg.getY());
         return this;
     }
 
     private Behavior<BrushProtocols> colorMsg(BrushProtocols.UpdateColorMsg msg) {
-        this.color= msg.getColor();
+        brushInfo.setColor(msg.getColor());
         return this;
     }
 

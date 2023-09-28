@@ -1,8 +1,8 @@
 package org.project2.brushmanager;
 
 public class BrushInfo {
-    private final int x, y;
-    private final int color;
+    private int x, y;
+    private int color;
 
     public BrushInfo(final int x, final int y, final int color) {
         this.x = x;
@@ -19,5 +19,12 @@ public class BrushInfo {
     }
     public int getColor(){
         return this.color;
+    }
+    public void setPosition(int x, int y){
+        this.x = x;
+        this.y = y;
+    }
+    public void setColor(int color){
+        this.color=color;
     }
 }

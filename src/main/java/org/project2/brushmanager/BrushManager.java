@@ -3,6 +3,7 @@ package org.project2.brushmanager;
 import akka.actor.typed.Behavior;
 import akka.actor.typed.javadsl.AbstractBehavior;
 import akka.actor.typed.javadsl.ActorContext;
+import akka.actor.typed.javadsl.Behaviors;
 import akka.actor.typed.javadsl.Receive;
 
 import java.awt.*;
@@ -26,7 +27,7 @@ public class BrushManager extends AbstractBehavior<BrushManagerProtocols> {
                 .build();
     }
 
-    private Behavior<BrushManagerProtocols> drawMsg(M msg) {
+    private Behavior<BrushManagerProtocols> drawMsg(BrushManagerProtocols.DrawMsg msg) {
         Graphics2D g = msg.getGraphics2D();
         brushes.forEach(brush -> {
             g.setColor(new Color(brush.getColor()));
@@ -48,6 +49,10 @@ public class BrushManager extends AbstractBehavior<BrushManagerProtocols> {
     private Behavior<BrushManagerProtocols> removeMsg(BrushManagerProtocols.RemoveBrushMsg msg) {
         this.brushes.remove(msg.getBrush());
         return this;
+    }
+
+    public static Behavior<BrushManagerProtocols> create() {
+        return Behaviors.setup(BrushManager::new);
     }
 
 
