@@ -1,4 +1,4 @@
-package org.project2;
+package org.project2.typo;
 
 import akka.actor.typed.ActorRef;
 import akka.actor.typed.Behavior;

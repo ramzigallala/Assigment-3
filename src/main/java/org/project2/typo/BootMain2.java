@@ -1,4 +1,4 @@
-package org.project2;
+package org.project2.typo;
 
 import akka.actor.Address;
 import akka.actor.AddressFromURIString;
@@ -9,7 +9,7 @@ import akka.actor.typed.javadsl.ActorContext;
 import akka.actor.typed.javadsl.Receive;
 import akka.cluster.typed.Cluster;
 import akka.cluster.typed.Join;
-import org.project2.BootMainProtocols.*;
+import org.project2.typo.BootMainProtocols.*;
 
 
 public class BootMain2 extends AbstractBehavior<BootMsg> {

@@ -1,4 +1,4 @@
-package org.project2;
+package org.project2.typo;
 
 import akka.actor.typed.ActorRef;
 import akka.actor.typed.Behavior;
@@ -8,7 +8,7 @@ import akka.actor.typed.javadsl.Receive;
 import akka.actor.typed.receptionist.Receptionist;
 import akka.cluster.typed.Cluster;
 import akka.cluster.typed.Join;
-import org.project2.BootMainProtocols.*;
+import org.project2.typo.BootMainProtocols.*;
 
 public class BootMain1 extends AbstractBehavior<BootMsg> {
     public BootMain1(ActorContext<BootMsg> context) {

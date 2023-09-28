@@ -1,4 +1,4 @@
-package org.project2;
+package org.project2.typo;
 
 import akka.actor.typed.Behavior;
 import akka.actor.typed.javadsl.AbstractBehavior;
@@ -7,7 +7,7 @@ import akka.actor.typed.javadsl.Behaviors;
 import akka.actor.typed.javadsl.Receive;
 import akka.actor.typed.receptionist.Receptionist;
 import akka.actor.typed.receptionist.ServiceKey;
-import org.project2.ActorProtocols.*;
+import org.project2.typo.ActorProtocols.*;
 
 public class Actor extends AbstractBehavior<CborSerializable> {
     public Actor(ActorContext<CborSerializable> context) {
