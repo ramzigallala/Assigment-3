@@ -1,18 +1,20 @@
 package org.project2.brushmanager;
 
 import java.awt.*;
+import java.awt.geom.Ellipse2D;
+import java.util.List;
 
 public interface BrushManagerProtocols {
 
     public static class DrawMsg implements BrushManagerProtocols {
-        private final Graphics2D graphics2D;
+        private final List<Ellipse2D.Double> circle;
 
-        public DrawMsg(Graphics2D graphics2D) {
-            this.graphics2D = graphics2D;
+        public DrawMsg(final List<Ellipse2D.Double> circle) {
+            this.circle = circle;
         }
 
-        public Graphics2D getGraphics2D() {
-            return graphics2D;
+        public List<Ellipse2D.Double> getCircle() {
+            return circle;
         }
     }
 

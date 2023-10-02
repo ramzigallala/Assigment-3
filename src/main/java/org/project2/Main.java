@@ -4,7 +4,6 @@ import akka.actor.typed.ActorSystem;
 import akka.actor.typed.javadsl.Behaviors;
 import com.typesafe.config.Config;
 import com.typesafe.config.ConfigFactory;
-import org.project2.typo.BootMain1;
 import org.project2.typo.BootMainProtocols;
 
 public class Main {

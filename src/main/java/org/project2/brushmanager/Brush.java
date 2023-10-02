@@ -29,6 +29,7 @@ public class Brush extends AbstractBehavior<BrushProtocols> {
 
     private Behavior<BrushProtocols> positionMsg(BrushProtocols.UpdatePositionMsg msg) {
         brushInfo.setPosition(msg.getX(), msg.getY());
+        //System.out.println(msg.getX()+" "+ msg.getY());
         return this;
     }
 

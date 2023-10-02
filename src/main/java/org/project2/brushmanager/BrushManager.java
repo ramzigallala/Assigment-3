@@ -8,6 +8,7 @@ import akka.actor.typed.javadsl.Receive;
 
 import java.awt.*;
 import java.awt.geom.Ellipse2D;
+import java.util.ArrayList;
 import java.util.List;
 
 public class BrushManager extends AbstractBehavior<BrushManagerProtocols> {
@@ -28,18 +29,23 @@ public class BrushManager extends AbstractBehavior<BrushManagerProtocols> {
     }
 
     private Behavior<BrushManagerProtocols> drawMsg(BrushManagerProtocols.DrawMsg msg) {
-        Graphics2D g = msg.getGraphics2D();
+        List<Ellipse2D.Double> g = msg.getCircle();
+        g.clear();
         brushes.forEach(brush -> {
-            g.setColor(new Color(brush.getColor()));
+            //g.setColor(new Color(brush.getColor()));
             var circle = new Ellipse2D.Double(brush.getX() - BRUSH_SIZE / 2.0, brush.getY() - BRUSH_SIZE / 2.0, BRUSH_SIZE, BRUSH_SIZE);
+            g.add(circle);
             // draw the polygon
-            g.fill(circle);
-            g.setStroke(new BasicStroke(STROKE_SIZE));
-            g.setColor(Color.BLACK);
-            g.draw(circle);
+            //g.fill(circle);
+            //g.setStroke(new BasicStroke(STROKE_SIZE));
+            //g.setColor(Color.BLACK);
+            //g.draw(circle);
+            System.out.println("disegno mouse "+brushes.size());
         });
         return this;
     }
+
+
 
     private Behavior<BrushManagerProtocols> addMsg(BrushManagerProtocols.AddBrushMsg msg) {
         this.brushes.add(msg.getBrush());
