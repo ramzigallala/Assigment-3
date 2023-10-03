@@ -1,8 +1,8 @@
 package org.project2.pixelgridview;
 
 import akka.actor.typed.ActorRef;
-import org.project2.MessageProtocols;
-import org.project2.VisualiserPanel;
+import org.project2.visualiserPanel.PixelGrid;
+import org.project2.visualiserPanel.VisualiserPanel;
 import org.project2.brushmanager.BrushManagerProtocols;
 
 import javax.swing.*;
@@ -15,21 +15,22 @@ import java.util.List;
 
 public class PixelGridView extends JFrame {
     private final VisualiserPanel panel;
-    private final MessageProtocols.PixelGrid grid;
+    private final PixelGrid grid;
 
     private final int w, h;
-    //private final List<PixelGridEventListener> pixelListeners;
+    private final List<PixelGridEventListener> pixelListeners;
+	private PixelGridEventListener pixel;
 	private final List<MouseMovedListener> movedListener;
 
-	//private final List<ColorChangeListener> colorChangeListeners;
+	private final List<ColorChangeListener> colorChangeListeners;
     
-    public PixelGridView(MessageProtocols.PixelGrid grid, ActorRef<BrushManagerProtocols> brushManager, int w, int h){
+    public PixelGridView(PixelGrid grid, ActorRef<BrushManagerProtocols> brushManager, int w, int h){
 		this.grid = grid;
 		this.w = w;
 		this.h = h;
-		//pixelListeners = new ArrayList<>();
+		pixelListeners = new ArrayList<>();
 		movedListener = new ArrayList<>();
-		//colorChangeListeners = new ArrayList<>();
+		colorChangeListeners = new ArrayList<>();
         setTitle(".:: PixelArt ::.");
 		setResizable(false);
         panel = new VisualiserPanel(grid, brushManager, w, h);
@@ -40,7 +41,8 @@ public class PixelGridView extends JFrame {
 		colorChangeButton.addActionListener(e -> {
 			var color = JColorChooser.showDialog(this, "Choose a color", Color.BLACK);
 			if (color != null) {
-				//colorChangeListeners.forEach(l -> l.colorChanged(color.getRGB()));
+				colorChangeListeners.forEach(l -> l.colorChanged(color.getRGB()));
+
 			}
 		});
 		// add panel and a button to the button to change color
@@ -48,7 +50,7 @@ public class PixelGridView extends JFrame {
 		add(colorChangeButton, BorderLayout.SOUTH);
         getContentPane().add(panel);
 		this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-		//hideCursor();
+		hideCursor();
     }
     
     public void refresh(){
@@ -62,15 +64,16 @@ public class PixelGridView extends JFrame {
 			this.setVisible(true);
 		});
     }
-    /*
-    public void addPixelGridEventListener(PixelGridEventListener l) { pixelListeners.add(l); }
-*/
+
+    public void addPixelGridEventListener(PixelGridEventListener l) {
+		//pixelListeners.add(l);
+		pixel = l;
+	}
+
 	public void addMouseMovedListener(MouseMovedListener l) { movedListener.add(l); }
-/*
+
 	public void addColorChangedListener(ColorChangeListener l) { colorChangeListeners.add(l); }
 
-
- */
 	private void hideCursor() {
 		var cursorImage = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
 		var blankCursor = Toolkit.getDefaultToolkit()
@@ -88,6 +91,7 @@ public class PixelGridView extends JFrame {
 				int col = e.getX() / dx;
 				int row = e.getY() / dy;
 				//pixelListeners.forEach(l -> l.selectedCell(col, row));
+				pixel.selectedCell(col, row);
 			}
 
 			@Override

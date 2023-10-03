@@ -33,28 +33,17 @@ public interface BrushProtocols {
         }
     }
     public static class BootMsg implements BrushProtocols {
-        private final int x, y;
-        private final int color;
+        private final BrushInfo brushInfo;
         private final ActorRef<BrushManagerProtocols> brushManager;
 
 
-        public BootMsg(int x, int y, int color, ActorRef<BrushManagerProtocols> brushManager) {
-            this.x = x;
-            this.y = y;
-            this.color = color;
+        public BootMsg(BrushInfo brushInfo, ActorRef<BrushManagerProtocols> brushManager) {
+            this.brushInfo=brushInfo;
             this.brushManager = brushManager;
         }
 
-        public int getX() {
-            return x;
-        }
-
-        public int getY() {
-            return y;
-        }
-
-        public int getColor() {
-            return color;
+        public BrushInfo getBrushInfo() {
+            return brushInfo;
         }
 
         public ActorRef<BrushManagerProtocols> getBrushManager() {

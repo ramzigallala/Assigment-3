@@ -5,12 +5,10 @@ import akka.actor.typed.Behavior;
 import akka.actor.typed.javadsl.AbstractBehavior;
 import akka.actor.typed.javadsl.ActorContext;
 import akka.actor.typed.javadsl.Receive;
-import org.project2.brushmanager.Brush;
-import org.project2.brushmanager.BrushManager;
-import org.project2.brushmanager.BrushManagerProtocols;
-import org.project2.brushmanager.BrushProtocols;
+import org.project2.brushmanager.*;
 import org.project2.pixelgridview.PixelGridView;
 import org.project2.typo.BootMainProtocols;
+import org.project2.visualiserPanel.PixelGrid;
 
 import java.util.Random;
 
@@ -30,17 +28,28 @@ public class BootMain extends AbstractBehavior<BootMainProtocols.BootMsg> {
 
         ActorRef<BrushManagerProtocols> brushManager = this.getContext().spawn(BrushManager.create(), "brushManager");
         ActorRef<BrushProtocols> localBrush = this.getContext().spawn(Brush.create(), "localBrush");
-        localBrush.tell(new BrushProtocols.BootMsg(5,2,randomColor(), brushManager));
+        BrushInfo localBrushInfo = new BrushInfo(5,2, randomColor());
+        localBrush.tell(new BrushProtocols.BootMsg(localBrushInfo, brushManager));
 
-        MessageProtocols.PixelGrid grid = new MessageProtocols.PixelGrid(30,30);
+        PixelGrid grid = new PixelGrid(30,30);
 
         PixelGridView view = new PixelGridView(grid, brushManager, 600, 600);
+        //gestiamo la posizione del brush
         view.addMouseMovedListener((x, y) -> {
             localBrush.tell(new BrushProtocols.UpdatePositionMsg(x,y));
             view.refresh();
         });
-        view.display();
+        //cambiamo il colore del brush
+        view.addColorChangedListener(color -> {
+            localBrush.tell(new BrushProtocols.UpdateColorMsg(color));
+        });
 
+        //cambiamo il colore del pixel
+        view.addPixelGridEventListener((x, y) -> {
+            grid.set(x, y, localBrushInfo.getColor());
+            view.refresh();
+        });
+        view.display();
 
         return this;
     }

@@ -1,25 +1,23 @@
-package org.project2;
+package org.project2.visualiserPanel;
 
 import akka.actor.typed.ActorRef;
-import org.project2.brushmanager.BrushManager;
 import org.project2.brushmanager.BrushManagerProtocols;
 
 import javax.swing.*;
 
 import java.awt.*;
-import java.awt.geom.Ellipse2D;
 import java.util.ArrayList;
 import java.util.List;
 
 public class VisualiserPanel extends JPanel {
     private static final int STROKE_SIZE = 1;
     private final ActorRef<BrushManagerProtocols> brushManager;
-    private final MessageProtocols.PixelGrid grid;
+    private final PixelGrid grid;
     private final int w,h;
 
-    private List<Ellipse2D.Double> circle= new ArrayList<>();
+    private final List<BrushDraw> brushDraws = new ArrayList<>();
 
-    public VisualiserPanel(MessageProtocols.PixelGrid grid, ActorRef<BrushManagerProtocols> brushManager, int w, int h){
+    public VisualiserPanel(PixelGrid grid, ActorRef<BrushManagerProtocols> brushManager, int w, int h){
         setSize(w,h);
         this.grid = grid;
         this.w = w;
@@ -29,7 +27,6 @@ public class VisualiserPanel extends JPanel {
     }
 
     public void paint(Graphics g){
-        System.out.println("ridisegno");
         Graphics2D g2 = (Graphics2D) g;
 
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
@@ -63,16 +60,18 @@ public class VisualiserPanel extends JPanel {
                 }
             }
         }
-        if(!circle.isEmpty()){
-            circle.forEach(c -> {
-                g2.fill(c);
-                g2.draw(c);
+
+        if(!brushDraws.isEmpty()){
+            brushDraws.forEach(brushDraw -> {
+                g2.setColor(brushDraw.getColor());
+                g2.fill(brushDraw.getCircle());
+                g2.setStroke(brushDraw.getStroke());
+                g2.setColor(Color.black);
+                g2.draw(brushDraw.getCircle());
             });
         }
 
-
         //disegna il mouse
-        brushManager.tell(new BrushManagerProtocols.DrawMsg(circle));
-        System.out.println("finito ridisegno");
+        brushManager.tell(new BrushManagerProtocols.DrawMsg(brushDraws));
     }
 }
