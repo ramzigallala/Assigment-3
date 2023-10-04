@@ -9,8 +9,9 @@ import akka.actor.typed.receptionist.Receptionist;
 import akka.cluster.typed.Cluster;
 import akka.cluster.typed.Join;
 import org.project2.brushmanager.*;
-import org.project2.manageactors.MasterActorReceiver;
-import org.project2.manageactors.SenderActor;
+import org.project2.manageactors.MasterSenderMsg;
+import org.project2.manageactors.MasterSenderMsgProtocols;
+import org.project2.manageactors.ListenerActors;
 import org.project2.pixelgridview.PixelGridView;
 import org.project2.typo.BootMainProtocols;
 import org.project2.utility.CborSerializable;
@@ -35,23 +36,11 @@ public class BootMain extends AbstractBehavior<BootMainProtocols.BootMsg> {
 
 
         //gestione connessione online
-        ActorRef<Receptionist.Listing> sender = this.getContext().spawn(SenderActor.create(), "sender");
-        ActorRef<CborSerializable> masterActor = this.getContext().spawn(MasterActorReceiver.create("masterActorReceiver1"), "masterActorReceiver1");
+        ActorRef<Receptionist.Listing> listenerActors = this.getContext().spawn(ListenerActors.create(), "listener");
+        ActorRef<CborSerializable> masterSenderMsg = this.getContext().spawn(MasterSenderMsg.create(), "masterSenderMsg");
         //accedo al cluster
         Cluster cluster = Cluster.get(getContext().getSystem());
         cluster.manager().tell(Join.create(cluster.selfMember().address()));
-
-        getContext().getSystem().scheduler()
-                .scheduleOnce(
-                        Duration.ofMillis(5000),
-                        new Runnable() {
-                            @Override
-                            public void run() {
-
-                                System.out.println("bootMain "+cluster.state());
-                            }
-                        },getContext().getExecutionContext());
-
 
 
 
@@ -67,8 +56,12 @@ public class BootMain extends AbstractBehavior<BootMainProtocols.BootMsg> {
         //gestiamo la posizione del brush
         view.addMouseMovedListener((x, y) -> {
             localBrush.tell(new BrushProtocols.UpdatePositionMsg(x,y));
+            BrushInfo bi = new BrushInfo(x,y, randomColor());
+            masterSenderMsg.tell(new MasterSenderMsgProtocols.SendBrush(bi));
             view.refresh();
         });
+
+        /*
         //cambiamo il colore del brush
         view.addColorChangedListener(color -> {
             localBrush.tell(new BrushProtocols.UpdateColorMsg(color));
@@ -79,6 +72,8 @@ public class BootMain extends AbstractBehavior<BootMainProtocols.BootMsg> {
             grid.set(x, y, localBrushInfo.getColor());
             view.refresh();
         });
+
+         */
         view.display();
 
         return this;

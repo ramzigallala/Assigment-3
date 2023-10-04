@@ -8,7 +8,9 @@ import akka.actor.typed.javadsl.Behaviors;
 import akka.actor.typed.javadsl.Receive;
 import akka.actor.typed.receptionist.Receptionist;
 import akka.actor.typed.receptionist.ServiceKey;
+import org.project2.manageactors.MasterSenderMsgProtocols;
 
+import java.time.Duration;
 import java.util.Set;
 
 public class Listener extends AbstractBehavior<Receptionist.Listing> {
@@ -34,6 +36,7 @@ public class Listener extends AbstractBehavior<Receptionist.Listing> {
             actor.tell(new ActorProtocols.SimpleMsg(actor));
             System.out.println(java.time.LocalDateTime.now()+" Message sent to actor: "+actor);
         });
+
 
         return Behaviors.same();
     }
