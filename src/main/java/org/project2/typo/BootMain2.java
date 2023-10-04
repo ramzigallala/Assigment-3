@@ -11,6 +11,8 @@ import akka.cluster.typed.Cluster;
 import akka.cluster.typed.Join;
 import org.project2.typo.BootMainProtocols.*;
 
+import java.time.Duration;
+
 
 public class BootMain2 extends AbstractBehavior<BootMsg> {
     public BootMain2(ActorContext<BootMsg> context) {
@@ -32,6 +34,16 @@ public class BootMain2 extends AbstractBehavior<BootMsg> {
 
         Cluster cluster = Cluster.get(getContext().getSystem());
         cluster.manager().tell(Join.create(seedNodes));
+        getContext().getSystem().scheduler()
+                .scheduleOnce(
+                        Duration.ofMillis(5000),
+                        new Runnable() {
+                            @Override
+                            public void run() {
+
+                                System.out.println("boot2 "+cluster.state());
+                            }
+                        },getContext().getExecutionContext());
 
         return this;
     }

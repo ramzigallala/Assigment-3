@@ -1,5 +1,7 @@
 package org.project2;
 
+import akka.actor.Address;
+import akka.actor.AddressFromURIString;
 import akka.actor.typed.ActorRef;
 import akka.actor.typed.Behavior;
 import akka.actor.typed.javadsl.AbstractBehavior;
@@ -19,8 +21,8 @@ import org.project2.visualiserPanel.PixelGrid;
 import java.time.Duration;
 import java.util.Random;
 
-public class BootMain extends AbstractBehavior<BootMainProtocols.BootMsg> {
-    public BootMain(ActorContext<BootMainProtocols.BootMsg> context) {
+public class BootMain2 extends AbstractBehavior<BootMainProtocols.BootMsg> {
+    public BootMain2(ActorContext<BootMainProtocols.BootMsg> context) {
         super(context);
     }
 
@@ -35,11 +37,13 @@ public class BootMain extends AbstractBehavior<BootMainProtocols.BootMsg> {
 
 
         //gestione connessione online
-        ActorRef<Receptionist.Listing> sender = this.getContext().spawn(SenderActor.create(), "sender");
-        ActorRef<CborSerializable> masterActor = this.getContext().spawn(MasterActorReceiver.create("masterActorReceiver1"), "masterActorReceiver1");
+        ActorRef<Receptionist.Listing> sender = this.getContext().spawn(SenderActor.create(), "sender2");
+        ActorRef<CborSerializable> masterActor = this.getContext().spawn(MasterActorReceiver.create("masterActorReceiver2"), "masterActorReceiver1");
         //accedo al cluster
+        Address seedNodes = AddressFromURIString.parse("akka://boot@127.0.0.1:2551");
+
         Cluster cluster = Cluster.get(getContext().getSystem());
-        cluster.manager().tell(Join.create(cluster.selfMember().address()));
+        cluster.manager().tell(Join.create(seedNodes));
 
         getContext().getSystem().scheduler()
                 .scheduleOnce(
