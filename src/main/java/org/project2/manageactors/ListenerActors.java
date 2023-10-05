@@ -32,12 +32,12 @@ public class ListenerActors extends AbstractBehavior<Receptionist.Listing> {
 
         //ottengo gli attori
         Set<ActorRef<CborSerializable>> actors = msg.getServiceInstances(ServiceKey.create(CborSerializable.class,"tunnel"));
-        System.out.println("dentro listener "+ actors);
+        //System.out.println("dentro listener "+ actors);
         Set<ActorRef<CborSerializable>> masterActors = new HashSet<>();
         Set<ActorRef<CborSerializable>> brushesInfo = new HashSet<>();
 
         actors.forEach(actor -> {
-
+            System.out.println("listener "+ actor.path());
             if(actor.path().name().contains("masterSender")){
                 masterActors.add(actor);
             }else{
@@ -45,6 +45,8 @@ public class ListenerActors extends AbstractBehavior<Receptionist.Listing> {
             }
 
         });
+        System.out.println("listener, master "+ masterActors.size()+" brushes "+brushesInfo.size());
+
 
         masterActors.forEach(actor -> actor.tell(new MasterSenderMsgProtocols.actorsMsg(brushesInfo)));
 

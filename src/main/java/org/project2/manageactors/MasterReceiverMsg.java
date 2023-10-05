@@ -32,14 +32,14 @@ public class MasterReceiverMsg extends AbstractBehavior<CborSerializable> {
 
     private Behavior<CborSerializable> brushInfo(MasterReceiverMsgProtocols.SentBrush msg) {
         if(brushManager!=null && pixelGridView!=null){
-            System.out.println("message arrived "+msg.getBrush().getX()+" "+msg.getBrush().getY()+ " "+msg.getBrush().getRole());
+            //System.out.println("message arrived "+msg.getBrush().getX()+" "+msg.getBrush().getY()+ " "+msg.getBrush().getRole());
 
             //la riga sotto rompe tutto
 
             //ActorRef<BrushProtocols> brushSent = this.getContext().spawn(Brush.create(), "b");
             ActorRef<BrushProtocols> brushSent = this.getContext().spawnAnonymous(Brush.create());
             brushSent.tell(new BrushProtocols.BootMsg(msg.getBrush(), brushManager));
-            System.out.println(brushManager);
+            //System.out.println(brushManager);
             pixelGridView.refresh();
         }
         return this;

@@ -36,11 +36,11 @@ public class BrushManager extends AbstractBehavior<BrushManagerProtocols> {
         var localcircle = new Ellipse2D.Double(localBrush.getX() - BRUSH_SIZE / 2.0, localBrush.getY() - BRUSH_SIZE / 2.0, BRUSH_SIZE, BRUSH_SIZE);
         brushDraws.add(new BrushDraw(localcircle, localcolor, STROKE_SIZE));
         outsideBrushes.forEach(brush -> {
-            System.out.println("disegno outside");
             var color = new Color(brush.getColor());
             var circle = new Ellipse2D.Double(brush.getX() - BRUSH_SIZE / 2.0, brush.getY() - BRUSH_SIZE / 2.0, BRUSH_SIZE, BRUSH_SIZE);
             brushDraws.add(new BrushDraw(circle, color, STROKE_SIZE));
         });
+
         outsideBrushes.clear();
 
         return this;
@@ -49,12 +49,12 @@ public class BrushManager extends AbstractBehavior<BrushManagerProtocols> {
 
 
     private Behavior<BrushManagerProtocols> addMsg(BrushManagerProtocols.AddBrushMsg msg) {
-        System.out.println("dentro add");
+
         if(msg.getBrush().getRole().equals("local")){
             this.localBrush=msg.getBrush();
         }else{
             this.outsideBrushes.add(msg.getBrush());
-            System.out.println("aggiunto outside");
+
         }
         return this;
     }

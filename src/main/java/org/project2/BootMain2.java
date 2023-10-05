@@ -48,7 +48,6 @@ public class BootMain2 extends AbstractBehavior<BootMainProtocols.BootMsg> {
 
 
         ActorRef<BrushManagerProtocols> brushManager = this.getContext().spawn(BrushManager.create(), "brushManager");
-        System.out.println(brushManager);
         ActorRef<BrushProtocols> localBrush = this.getContext().spawn(Brush.create(), "localBrush");
         BrushInfo localBrushInfo = new BrushInfo(5,2, randomColor(), "local");
         localBrush.tell(new BrushProtocols.BootMsg(localBrushInfo, brushManager));

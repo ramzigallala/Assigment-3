@@ -28,13 +28,13 @@ public class MasterSenderMsg extends AbstractBehavior<CborSerializable> {
 
     private Behavior<CborSerializable> sendInfo(MasterSenderMsgProtocols.SendBrush msg) {
         if(actors!=null){
-            System.out.println("sendInfo "+actors.size());
+            //System.out.println("sendInfo "+actors.size());
 
             actors.forEach(actor -> {
 
                 //System.out.println("onboot information: "+brush.getX());
                 actor.tell(new MasterReceiverMsgProtocols.SentBrush(msg.getBrushInfo()));
-                System.out.println("send message: "+java.time.LocalDateTime.now());
+                //System.out.println("send message: "+java.time.LocalDateTime.now());
 
 
             });
@@ -44,6 +44,16 @@ public class MasterSenderMsg extends AbstractBehavior<CborSerializable> {
 
     private Behavior<CborSerializable> onBootMsg(MasterSenderMsgProtocols.actorsMsg msg) {
         actors = msg.getActors();
+        msg.getActors().forEach(actor -> {
+            //System.out.println("actor: "+ actor.path());
+            /*
+            if(!actor.path().address().toString().contains("@")){
+                actors.remove(actor);
+            }
+
+             */
+        });
+        //System.out.println("size: "+actors.size());
         return this;
     }
 
