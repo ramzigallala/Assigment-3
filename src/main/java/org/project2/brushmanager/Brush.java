@@ -24,6 +24,7 @@ public class Brush extends AbstractBehavior<BrushProtocols> {
     private Behavior<BrushProtocols> bootMsg(BrushProtocols.BootMsg msg) {
         brushInfo = msg.getBrushInfo();
         msg.getBrushManager().tell(new BrushManagerProtocols.AddBrushMsg(brushInfo));
+        System.out.println("dentro brush");
         return this;
     }
 

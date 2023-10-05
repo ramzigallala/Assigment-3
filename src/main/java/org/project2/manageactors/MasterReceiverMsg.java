@@ -9,7 +9,6 @@ import akka.actor.typed.javadsl.Receive;
 import akka.actor.typed.receptionist.Receptionist;
 import akka.actor.typed.receptionist.ServiceKey;
 import org.project2.brushmanager.Brush;
-import org.project2.brushmanager.BrushInfo;
 import org.project2.brushmanager.BrushManagerProtocols;
 import org.project2.brushmanager.BrushProtocols;
 import org.project2.pixelgridview.PixelGridView;
@@ -32,11 +31,15 @@ public class MasterReceiverMsg extends AbstractBehavior<CborSerializable> {
     }
 
     private Behavior<CborSerializable> brushInfo(MasterReceiverMsgProtocols.SentBrush msg) {
-        System.out.println("message arrived "+msg.getBrush().getX()+" "+msg.getBrush().getY());
         if(brushManager!=null && pixelGridView!=null){
+            System.out.println("message arrived "+msg.getBrush().getX()+" "+msg.getBrush().getY()+ " "+msg.getBrush().getRole());
+
             //la riga sotto rompe tutto
+
             //ActorRef<BrushProtocols> brushSent = this.getContext().spawn(Brush.create(), "b");
-            //brushSent.tell(new BrushProtocols.BootMsg(msg.getBrush(), brushManager));
+            ActorRef<BrushProtocols> brushSent = this.getContext().spawnAnonymous(Brush.create());
+            brushSent.tell(new BrushProtocols.BootMsg(msg.getBrush(), brushManager));
+            System.out.println(brushManager);
             pixelGridView.refresh();
         }
         return this;

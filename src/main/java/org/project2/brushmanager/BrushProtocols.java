@@ -37,6 +37,7 @@ public interface BrushProtocols {
         private final ActorRef<BrushManagerProtocols> brushManager;
 
 
+
         public BootMsg(BrushInfo brushInfo, ActorRef<BrushManagerProtocols> brushManager) {
             this.brushInfo=brushInfo;
             this.brushManager = brushManager;
@@ -49,5 +50,9 @@ public interface BrushProtocols {
         public ActorRef<BrushManagerProtocols> getBrushManager() {
             return brushManager;
         }
+
+
     }
+
+
 }
