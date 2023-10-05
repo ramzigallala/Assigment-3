@@ -61,11 +61,11 @@ public class BootMain2 extends AbstractBehavior<BootMainProtocols.BootMsg> {
         //gestiamo la posizione del brush
         view.addMouseMovedListener((x, y) -> {
             localBrush.tell(new BrushProtocols.UpdatePositionMsg(x,y));
-            BrushInfo bi = new BrushInfo(x,y, randomColor(),"outside");
+            BrushInfo bi = new BrushInfo(x,y, localBrushInfo.getColor(),"outside");
             masterSenderMsg.tell(new MasterSenderMsgProtocols.SendBrush(bi));
             view.refresh();
         });
-        /*
+
         //cambiamo il colore del brush
         view.addColorChangedListener(color -> {
             localBrush.tell(new BrushProtocols.UpdateColorMsg(color));
@@ -77,7 +77,7 @@ public class BootMain2 extends AbstractBehavior<BootMainProtocols.BootMsg> {
             view.refresh();
         });
 
-         */
+
         view.display();
 
         return this;

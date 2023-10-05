@@ -15,7 +15,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class MasterSenderMsg extends AbstractBehavior<CborSerializable> {
-    private HashMap<String, ActorRef<CborSerializable>> masterReceivers =null;
+    private Set<ActorRef<CborSerializable>> masterReceivers =null;
     public MasterSenderMsg(ActorContext<CborSerializable> context) {
         super(context);
     }
@@ -32,10 +32,10 @@ public class MasterSenderMsg extends AbstractBehavior<CborSerializable> {
         if(masterReceivers !=null){
             //System.out.println("sendInfo "+actors.size());
 
-            masterReceivers.forEach((name, actor) -> {
+            masterReceivers.forEach(actor -> {
 
                 //System.out.println("onboot information: "+brush.getX());
-                actor.tell(new MasterReceiverMsgProtocols.SentBrush(msg.getBrushInfo(), name));
+                actor.tell(new MasterReceiverMsgProtocols.SentBrush(msg.getBrushInfo(), actor.path().name().toString()));
                 //System.out.println("send message: "+java.time.LocalDateTime.now());
 
 
@@ -45,14 +45,14 @@ public class MasterSenderMsg extends AbstractBehavior<CborSerializable> {
     }
 
     private Behavior<CborSerializable> onBootMsg(MasterSenderMsgProtocols.actorsMsg msg) {
-        masterReceivers = new HashMap<>();
+        masterReceivers = new HashSet<>();
         //masterReceivers.addAll(msg.getMasterReceivers());
         msg.getMasterReceivers().forEach(actor -> {
 
             if(actor.path().address().toString().contains("@")){
                 System.out.println(" added masterReceiver: "+ actor.path());
                 //masterReceivers.remove(actor);
-                masterReceivers.put(actor.path().address().toString(),actor);
+                masterReceivers.add(actor);
             }
 
 

@@ -33,25 +33,25 @@ public class ListenerActors extends AbstractBehavior<Receptionist.Listing> {
         //ottengo gli attori
         Set<ActorRef<CborSerializable>> actors = msg.getServiceInstances(ServiceKey.create(CborSerializable.class,"tunnel"));
         //System.out.println("dentro listener "+ actors);
-        Set<ActorRef<CborSerializable>> masterActors = new HashSet<>();
-        Set<ActorRef<CborSerializable>> brushesInfo = new HashSet<>();
+        Set<ActorRef<CborSerializable>> masterSenderActors = new HashSet<>();
+        Set<ActorRef<CborSerializable>> masterReceiverActors = new HashSet<>();
 
         actors.forEach(actor -> {
             //System.out.println("listener "+ actor.path());
             if(actor.path().name().contains("masterSender")){
-                masterActors.add(actor);
+                masterSenderActors.add(actor);
             }else{
-                brushesInfo.add(actor);
+                masterReceiverActors.add(actor);
             }
 
         });
-        System.out.println("listener, masterSender "+ masterActors.size()+" brushes "+brushesInfo.size());
+        System.out.println("listener, masterSender "+ masterSenderActors.size()+" brushes "+masterReceiverActors.size());
 
 
-        masterActors.forEach(actor -> {
+        masterSenderActors.forEach(actor -> {
             //System.out.println("listener, masterSender "+ actor.path());
 
-            actor.tell(new MasterSenderMsgProtocols.actorsMsg(brushesInfo));
+            actor.tell(new MasterSenderMsgProtocols.actorsMsg(masterReceiverActors));
         });
 
 
