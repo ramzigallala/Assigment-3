@@ -10,10 +10,11 @@ import akka.actor.typed.receptionist.Receptionist;
 import akka.actor.typed.receptionist.ServiceKey;
 import org.project2.utility.CborSerializable;
 
+import java.util.HashSet;
 import java.util.Set;
 
 public class MasterSenderMsg extends AbstractBehavior<CborSerializable> {
-    private Set<ActorRef<CborSerializable>> actors=null;
+    private Set<ActorRef<CborSerializable>> masterReceivers =null;
     public MasterSenderMsg(ActorContext<CborSerializable> context) {
         super(context);
     }
@@ -27,10 +28,10 @@ public class MasterSenderMsg extends AbstractBehavior<CborSerializable> {
     }
 
     private Behavior<CborSerializable> sendInfo(MasterSenderMsgProtocols.SendBrush msg) {
-        if(actors!=null){
+        if(masterReceivers !=null){
             //System.out.println("sendInfo "+actors.size());
 
-            actors.forEach(actor -> {
+            masterReceivers.forEach(actor -> {
 
                 //System.out.println("onboot information: "+brush.getX());
                 actor.tell(new MasterReceiverMsgProtocols.SentBrush(msg.getBrushInfo()));
@@ -43,15 +44,17 @@ public class MasterSenderMsg extends AbstractBehavior<CborSerializable> {
     }
 
     private Behavior<CborSerializable> onBootMsg(MasterSenderMsgProtocols.actorsMsg msg) {
-        actors = msg.getActors();
-        msg.getActors().forEach(actor -> {
-            //System.out.println("actor: "+ actor.path());
-            /*
-            if(!actor.path().address().toString().contains("@")){
-                actors.remove(actor);
+        masterReceivers = new HashSet<>();
+        //masterReceivers.addAll(msg.getMasterReceivers());
+        msg.getMasterReceivers().forEach(actor -> {
+
+            if(actor.path().address().toString().contains("@")){
+                System.out.println(" removed masterReceiver: "+ actor.path());
+                //masterReceivers.remove(actor);
+                masterReceivers.add(actor);
             }
 
-             */
+
         });
         //System.out.println("size: "+actors.size());
         return this;

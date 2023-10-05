@@ -37,7 +37,7 @@ public class ListenerActors extends AbstractBehavior<Receptionist.Listing> {
         Set<ActorRef<CborSerializable>> brushesInfo = new HashSet<>();
 
         actors.forEach(actor -> {
-            System.out.println("listener "+ actor.path());
+            //System.out.println("listener "+ actor.path());
             if(actor.path().name().contains("masterSender")){
                 masterActors.add(actor);
             }else{
@@ -45,10 +45,14 @@ public class ListenerActors extends AbstractBehavior<Receptionist.Listing> {
             }
 
         });
-        System.out.println("listener, master "+ masterActors.size()+" brushes "+brushesInfo.size());
+        System.out.println("listener, masterSender "+ masterActors.size()+" brushes "+brushesInfo.size());
 
 
-        masterActors.forEach(actor -> actor.tell(new MasterSenderMsgProtocols.actorsMsg(brushesInfo)));
+        masterActors.forEach(actor -> {
+            //System.out.println("listener, masterSender "+ actor.path());
+
+            actor.tell(new MasterSenderMsgProtocols.actorsMsg(brushesInfo));
+        });
 
 
         return Behaviors.same();

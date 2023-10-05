@@ -10,17 +10,17 @@ import java.util.Set;
 
 public class MasterSenderMsgProtocols {
     public static class actorsMsg implements CborSerializable {
-        private final Set<ActorRef<CborSerializable>> actors;
+        private final Set<ActorRef<CborSerializable>> masterReceivers;
 
 
         @JsonCreator
-        public actorsMsg(Set<ActorRef<CborSerializable>> actors) {
-            this.actors = actors;
+        public actorsMsg(Set<ActorRef<CborSerializable>> masterReceivers) {
+            this.masterReceivers = masterReceivers;
         }
 
 
-        public Set<ActorRef<CborSerializable>> getActors() {
-            return actors;
+        public Set<ActorRef<CborSerializable>> getMasterReceivers() {
+            return masterReceivers;
         }
     }
 
