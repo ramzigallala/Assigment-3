@@ -14,6 +14,8 @@ import org.project2.brushmanager.BrushProtocols;
 import org.project2.pixelgridview.PixelGridView;
 import org.project2.utility.CborSerializable;
 
+import java.util.Optional;
+
 public class MasterReceiverMsg extends AbstractBehavior<CborSerializable> {
 
     private ActorRef<BrushManagerProtocols> brushManager;
@@ -38,7 +40,7 @@ public class MasterReceiverMsg extends AbstractBehavior<CborSerializable> {
 
             //ActorRef<BrushProtocols> brushSent = this.getContext().spawn(Brush.create(), "b");
             ActorRef<BrushProtocols> brushSent = this.getContext().spawnAnonymous(Brush.create());
-            brushSent.tell(new BrushProtocols.BootMsg(msg.getBrush(), brushManager));
+            brushSent.tell(new BrushProtocols.BootMsg(msg.getBrush(), Optional.of(msg.getName()), brushManager));
             //System.out.println(brushManager);
             pixelGridView.refresh();
         }

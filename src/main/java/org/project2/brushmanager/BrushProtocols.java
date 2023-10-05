@@ -3,6 +3,8 @@ package org.project2.brushmanager;
 
 import akka.actor.typed.ActorRef;
 
+import java.util.Optional;
+
 public interface BrushProtocols {
     public static class UpdatePositionMsg implements BrushProtocols {
         private final int x, y;
@@ -34,12 +36,14 @@ public interface BrushProtocols {
     }
     public static class BootMsg implements BrushProtocols {
         private final BrushInfo brushInfo;
+        private final Optional<String> name;
         private final ActorRef<BrushManagerProtocols> brushManager;
 
 
 
-        public BootMsg(BrushInfo brushInfo, ActorRef<BrushManagerProtocols> brushManager) {
+        public BootMsg(BrushInfo brushInfo, Optional<String> name, ActorRef<BrushManagerProtocols> brushManager) {
             this.brushInfo=brushInfo;
+            this.name = name;
             this.brushManager = brushManager;
         }
 
@@ -51,7 +55,9 @@ public interface BrushProtocols {
             return brushManager;
         }
 
-
+        public Optional<String> getName() {
+            return name;
+        }
     }
 
 

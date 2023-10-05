@@ -33,13 +33,19 @@ public class MasterReceiverMsgProtocols {
 
     public static class SentBrush implements CborSerializable {
         private final BrushInfo brush;
+        private final String name;
         @JsonCreator
-        public SentBrush(BrushInfo brush) {
+        public SentBrush(BrushInfo brush, String name) {
             this.brush= brush;
+            this.name = name;
         }
 
         public BrushInfo getBrush() {
             return brush;
+        }
+
+        public String getName() {
+            return name;
         }
     }
 }

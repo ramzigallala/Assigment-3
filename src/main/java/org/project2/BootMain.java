@@ -15,6 +15,7 @@ import org.project2.typo.BootMainProtocols;
 import org.project2.utility.CborSerializable;
 import org.project2.visualiserPanel.PixelGrid;
 
+import java.util.Optional;
 import java.util.Random;
 
 public class BootMain extends AbstractBehavior<BootMainProtocols.BootMsg> {
@@ -47,7 +48,7 @@ public class BootMain extends AbstractBehavior<BootMainProtocols.BootMsg> {
         ActorRef<BrushManagerProtocols> brushManager = this.getContext().spawn(BrushManager.create(), "brushManager");
         ActorRef<BrushProtocols> localBrush = this.getContext().spawn(Brush.create(), "localBrush");
         BrushInfo localBrushInfo = new BrushInfo(5,2, randomColor(), "local");
-        localBrush.tell(new BrushProtocols.BootMsg(localBrushInfo, brushManager));
+        localBrush.tell(new BrushProtocols.BootMsg(localBrushInfo, Optional.empty(), brushManager));
 
         PixelGrid grid = new PixelGrid(30,30);
 

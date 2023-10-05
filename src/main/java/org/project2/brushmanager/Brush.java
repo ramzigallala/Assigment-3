@@ -23,7 +23,7 @@ public class Brush extends AbstractBehavior<BrushProtocols> {
 
     private Behavior<BrushProtocols> bootMsg(BrushProtocols.BootMsg msg) {
         brushInfo = msg.getBrushInfo();
-        msg.getBrushManager().tell(new BrushManagerProtocols.AddBrushMsg(brushInfo));
+        msg.getBrushManager().tell(new BrushManagerProtocols.AddBrushMsg(brushInfo, msg.getName()));
 
         return this;
     }

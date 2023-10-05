@@ -3,6 +3,7 @@ package org.project2.brushmanager;
 import org.project2.visualiserPanel.BrushDraw;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface BrushManagerProtocols {
 
@@ -20,13 +21,19 @@ public interface BrushManagerProtocols {
 
     public static class AddBrushMsg implements BrushManagerProtocols {
         private final BrushInfo brush;
+        private final Optional<String> name;
 
-        public AddBrushMsg(BrushInfo brush) {
+        public AddBrushMsg(BrushInfo brush, Optional<String> name) {
             this.brush = brush;
+            this.name = name;
         }
 
         public BrushInfo getBrush() {
             return brush;
+        }
+
+        public Optional<String> getName() {
+            return name;
         }
     }
 
