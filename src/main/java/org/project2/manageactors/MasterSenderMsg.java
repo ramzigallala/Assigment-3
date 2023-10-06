@@ -33,9 +33,9 @@ public class MasterSenderMsg extends AbstractBehavior<CborSerializable> {
             //System.out.println("sendInfo "+actors.size());
 
             masterReceivers.forEach(actor -> {
-
+                //System.out.println("sender "+this.getContext().getSystem().address());
                 //System.out.println("onboot information: "+brush.getX());
-                actor.tell(new MasterReceiverMsgProtocols.SentBrush(msg.getBrushInfo(), actor.path().name().toString()));
+                actor.tell(new MasterReceiverMsgProtocols.SentBrush(msg.getBrushInfo(), this.getContext().getSystem().address().toString()));
                 //System.out.println("send message: "+java.time.LocalDateTime.now());
 
 
