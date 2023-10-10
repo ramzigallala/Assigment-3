@@ -16,22 +16,22 @@ import java.io.File;
 
 public class Main {
 
-    static void CLI(String startingDir, int nBuckets, int maxLines, int maxFiles){
-        //TODO protocollo di avvio senza GUI
+    static void GUI(){
+        new AnalyserGUI();
     }
 
-    static void GUI() {
+    static void CLI(int bucketsNumber, int maxTopFiles, int bucketSize, String dir) {
         Config customConf = ConfigFactory.load("reference.conf");
         ActorSystem system = ActorSystem.create("myActorSystem", customConf);
         final ActorRef bootActor = system.actorOf(Props.create(BootActor.class), "bootActor");
         final ActorRef viewActor = system.actorOf(Props.create(ViewActor.class),"viewActor");
         viewActor.tell(new ViewActorProtocol.consoleInfo(100), null);
-        bootActor.tell(new BootActorProtocol.BootMsg(5, 10, 100, new File("D:\\Desktop\\PCD"), viewActor), null);
+        bootActor.tell(new BootActorProtocol.BootMsg(bucketsNumber, maxTopFiles, bucketSize, new File(dir), viewActor), null);
     }
 
     public static void main(String[] args) {
-        if (args.length == 4) {
-            CLI(args[0], Integer.parseInt(args[1]), Integer.parseInt(args[2]), Integer.parseInt(args[3]));
+        if (args.length > 0) {
+            CLI(Integer.parseInt(args[0]), Integer.parseInt(args[1]), Integer.parseInt(args[2]), args[3]);
         } else {
             GUI();
         }
