@@ -16,15 +16,24 @@ import java.io.File;
 
 public class Main {
 
-    public static void main(String[] args) {
-        //new AnalyserGUI();
+    static void CLI(String startingDir, int nBuckets, int maxLines, int maxFiles){
+        //TODO protocollo di avvio senza GUI
+    }
 
+    static void GUI() {
         Config customConf = ConfigFactory.load("reference.conf");
         ActorSystem system = ActorSystem.create("myActorSystem", customConf);
         final ActorRef bootActor = system.actorOf(Props.create(BootActor.class), "bootActor");
         final ActorRef viewActor = system.actorOf(Props.create(ViewActor.class),"viewActor");
         viewActor.tell(new ViewActorProtocol.consoleInfo(100), null);
         bootActor.tell(new BootActorProtocol.BootMsg(5, 10, 100, new File("D:\\Desktop\\PCD"), viewActor), null);
+    }
 
+    public static void main(String[] args) {
+        if (args.length == 4) {
+            CLI(args[0], Integer.parseInt(args[1]), Integer.parseInt(args[2]), Integer.parseInt(args[3]));
+        } else {
+            GUI();
+        }
     }
 }
