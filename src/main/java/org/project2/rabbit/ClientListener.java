@@ -3,6 +3,7 @@ package org.project2.rabbit;
 import com.rabbitmq.client.*;
 import org.apache.commons.lang3.SerializationUtils;
 
+import java.awt.*;
 import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.TimeoutException;
@@ -12,9 +13,11 @@ public class ClientListener {
     private final BrushManager brushManager;
     private final PixelGridView view;
     private final String consumerTag;
-    public ClientListener(BrushManager brushManager, PixelGridView view) throws IOException, TimeoutException {
+    private final PixelGrid grid;
+    public ClientListener(BrushManager brushManager, PixelGridView view, PixelGrid grid) throws IOException, TimeoutException {
         this.brushManager = brushManager;
         this.view=view;
+        this.grid=grid;
         ConnectionFactory factory = new ConnectionFactory();
         factory.setHost("localhost");
         Connection connection = factory.newConnection();
@@ -54,7 +57,17 @@ public class ClientListener {
 
     private void updateView(byte[] message){
         //System.out.println("mio "+brushManager.getBrushes().get(0).getX());
-        BrushManager brushManagerDelivered = SerializationUtils.deserialize(message);
+        StatusManager statusManager = SerializationUtils.deserialize(message);
+
+        BrushManager brushManagerDelivered = statusManager.getBrushManager();
+        PixelGrid gridDelivered = statusManager.getGrid();
+        for (int row = 0; row < grid.getNumRows(); row++) {
+            for (int column = 0; column < grid.getNumColumns(); column++) {
+                grid.getGrid()[row][column]=gridDelivered.getGrid()[row][column];
+
+            }
+        }
+
         //System.out.println("arrivato "+brushManagerDelivered.getBrushes().get(0).getX());
         //brushManager.getBrushes().clear();
         //brushManager.getBrushes().addAll(brushManagerDelivered.getBrushes());

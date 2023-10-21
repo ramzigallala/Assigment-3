@@ -18,7 +18,7 @@ public class MAin2 {
             var brushManager = new BrushManager();
             PixelGrid grid = new PixelGrid(40,40);
             PixelGridView view = new PixelGridView(grid, brushManager, 600, 600);
-            ClientListener clientListener = new ClientListener(brushManager, view);
+            ClientListener clientListener = new ClientListener(brushManager, view, grid);
             ClientSender clientSender = new ClientSender();
 
             var localBrush = new BrushManager.Brush(0, 0, randomColor(), clientListener.getConsumerTag());
@@ -49,7 +49,8 @@ public class MAin2 {
             //aggiungo un listener per fare l'update appena viene triggerato il listener in pixelGridView
             view.addPixelGridEventListener((x, y) -> {
                 grid.set(x, y, localBrush.getColor());
-                view.refresh();
+                StatusManager statusManager = new StatusManager(grid,brushManager);
+                clientSender.sendUpdate(statusManager.getStatus());
             });
 
             //aggiungo un listener per fare l'update appena viene triggerato il listener in pixelGridView

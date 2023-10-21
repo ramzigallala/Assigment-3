@@ -40,6 +40,7 @@ public class ClientSender {
 
     private void sendStatus(String routingKey, byte[] message){
         try {
+            System.out.println("dentro modifica grid");
             channel.basicPublish(EXCHANGE_NAME, routingKey, null, message);
             System.out.println(" [x] Sent '" + routingKey + "':'" + message + "'");
         } catch (IOException e) {

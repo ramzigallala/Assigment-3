@@ -6,14 +6,22 @@ import java.io.Serializable;
 
 public class StatusManager implements Serializable {
     private final PixelGrid grid;
-    private final Serializable brushManager;
+    private final BrushManager brushManager;
 
 
 
-    public StatusManager(PixelGrid grid, Serializable brushManager) {
+    public StatusManager(PixelGrid grid, BrushManager brushManager) {
         this.grid = grid;
 
         this.brushManager = brushManager;
+    }
+
+    public PixelGrid getGrid() {
+        return grid;
+    }
+
+    public BrushManager getBrushManager() {
+        return brushManager;
     }
 
     public byte[] getStatus(){
@@ -21,7 +29,10 @@ public class StatusManager implements Serializable {
 
 
 
-        return data;
+
+
+
+        return SerializationUtils.serialize(this);
     }
 
 }
