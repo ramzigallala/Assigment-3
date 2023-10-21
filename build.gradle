@@ -19,6 +19,7 @@ dependencies {
             ScalaBinary: "2.13"
     ]
 
+    implementation 'com.rabbitmq:amqp-client:5.17.0'
     /* module 3.1 - actors - akka*/
     implementation platform("com.typesafe.akka:akka-bom_2.13:2.8.2")
     implementation "com.typesafe.akka:akka-actor-typed_2.13"

@@ -14,14 +14,24 @@ public class Test3_PublisherWithRoutingDirect {
     factory.setHost("localhost");
     Connection connection = factory.newConnection();
     Channel channel = connection.createChannel();
+    channel.confirmSelect();
 
     channel.exchangeDeclare(EXCHANGE_NAME, "direct");
-
+Thread.sleep(10000);
     String routingKey = "tag-1"; // getSeverity(argv);
     String message = "hello2"; // getMessage(argv);
 
+
     channel.basicPublish(EXCHANGE_NAME, routingKey, null, message.getBytes("UTF-8"));
+    channel.addConfirmListener((sequenceNumber, multiple) -> {
+      // code when message is confirmed
+      System.out.println("ciao");
+    }, (sequenceNumber, multiple) -> {
+      // code when message is nack-ed
+      System.out.println("ciao");
+    });
     System.out.println(" [x] Sent '" + routingKey + "':'" + message + "'");
+    Thread.sleep(10000);
     channel.close();
     connection.close();
   }
