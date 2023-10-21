@@ -27,6 +27,8 @@ dependencies {
     implementation "com.typesafe.akka:akka-serialization-jackson_${versions.ScalaBinary}"
 
     implementation "com.typesafe.akka:akka-cluster-typed_${versions.ScalaBinary}"
+    implementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.13.0'
+
 }
 
 test {

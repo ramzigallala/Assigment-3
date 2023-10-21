@@ -2,6 +2,8 @@ package org.project2.rabbit;
 
 import com.rabbitmq.client.*;
 
+import java.io.IOException;
+
 public class Test3_SubscriberWithRoutingDirect {
 
   private static final String EXCHANGE_NAME = "direct_logs";
@@ -11,7 +13,6 @@ public class Test3_SubscriberWithRoutingDirect {
     factory.setHost("localhost");
     Connection connection = factory.newConnection();
     Channel channel = connection.createChannel();
-    channel.confirmSelect();
 
     channel.exchangeDeclare(EXCHANGE_NAME, "direct");
     String queueName = channel.queueDeclare().getQueue();
@@ -23,10 +24,11 @@ public class Test3_SubscriberWithRoutingDirect {
     System.out.println(" [*] Waiting for messages. To exit press CTRL+C");
 
     DeliverCallback deliverCallback = (consumerTag, delivery) -> {
-        channel.basicAck(delivery.getEnvelope().getDeliveryTag(),false);
+
         String message = new String(delivery.getBody(), "UTF-8");
-        System.out.println(" [x] Received '" + delivery.getEnvelope().getRoutingKey() + "':'" + message + "'");
+        System.out.println(" [x] Received '" + delivery.getEnvelope().getRoutingKey() + "':'" + message + "' "+ delivery.getEnvelope().getDeliveryTag());
     };
+
     channel.basicConsume(queueName, false, deliverCallback, consumerTag -> {});
 
 

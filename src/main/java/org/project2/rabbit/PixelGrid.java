@@ -1,8 +1,9 @@
 package org.project2.rabbit;
 
+import java.io.Serializable;
 import java.util.Arrays;
 
-public class PixelGrid {
+public class PixelGrid implements Serializable {
 	private final int nRows;
 	private final int nColumns;
 	private final int[][] grid;
@@ -17,6 +18,7 @@ public class PixelGrid {
 		for (int i = 0; i < nRows; i++) {
 			Arrays.fill(grid[i], 0);
 		}
+
 	}
 	
 	public void set(final int x, final int y, final int color) {
@@ -30,7 +32,10 @@ public class PixelGrid {
 	public int getNumRows() {
 		return this.nRows;
 	}
-	
+
+	public int[][] getGrid() {
+		return grid;
+	}
 
 	public int getNumColumns() {
 		return this.nColumns;

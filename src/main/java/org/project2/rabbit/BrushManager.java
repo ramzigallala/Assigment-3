@@ -1,13 +1,26 @@
 package org.project2.rabbit;
 
 
-import java.awt.*;
-import java.util.List;
+import org.apache.commons.lang3.SerializationUtils;
 
-public class BrushManager {
+import java.awt.*;
+import java.io.Serializable;
+import java.util.Comparator;
+import java.util.List;
+import java.util.TreeMap;
+import java.util.TreeSet;
+
+public class BrushManager implements Serializable {
     private static final int BRUSH_SIZE = 10;
     private static final int STROKE_SIZE = 2;
-    private List<Brush> brushes = new java.util.ArrayList<>();
+    class SerializableFooComparator implements Serializable, Comparator<Brush> {
+
+        @Override
+        public int compare(Brush o1, Brush o2) {
+            return o1.getConsumerTag().hashCode();
+        }
+    }
+    private TreeSet<Brush> brushes = new TreeSet<>(new SerializableFooComparator());
 
     void draw(final Graphics2D g) {
         brushes.forEach(brush -> {
@@ -22,21 +35,32 @@ public class BrushManager {
     }
 
     void addBrush(final Brush brush) {
-        brushes.add(brush);
+        System.out.println("aggiungo: "+brushes.add(brush)+" "+brush.getX());
+
     }
 
     void removeBrush(final Brush brush) {
         brushes.remove(brush);
     }
 
-    public static class Brush {
+    public void setBrushes(TreeSet<Brush> brushes) {
+        this.brushes = brushes;
+    }
+
+    public TreeSet<Brush> getBrushes() {
+        return brushes;
+    }
+
+    public static class Brush implements Serializable{
         private int x, y;
         private int color;
+        private final String consumerTag;
 
-        public Brush(final int x, final int y, final int color) {
+        public Brush(final int x, final int y, final int color, String consumerTag) {
             this.x = x;
             this.y = y;
             this.color = color;
+            this.consumerTag=consumerTag;
         }
 
         public void updatePosition(final int x, final int y) {
@@ -52,6 +76,10 @@ public class BrushManager {
         }
         public int getColor(){
             return this.color;
+        }
+
+        public String getConsumerTag() {
+            return consumerTag;
         }
 
         public void setColor(int color){
