@@ -10,7 +10,7 @@ import java.io.IOException;
 import java.util.Random;
 import java.util.concurrent.TimeoutException;
 
-public class PixelArtMain {
+public class PixelArtMain2 {
     public static int randomColor() {
         Random rand = new Random();
         return rand.nextInt(256 * 256 * 256);
@@ -68,5 +68,6 @@ public class PixelArtMain {
 
 
     }
+
 
 }

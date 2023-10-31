@@ -1,4 +1,4 @@
-package org.project2.rabbit;
+package org.project2.rabbit.message;
 
 import java.io.Serializable;
 import java.util.Arrays;

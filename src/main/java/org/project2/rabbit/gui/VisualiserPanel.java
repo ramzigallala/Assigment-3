@@ -1,4 +1,7 @@
-package org.project2.rabbit;
+package org.project2.rabbit.gui;
+
+import org.project2.rabbit.message.BrushManager;
+import org.project2.rabbit.message.PixelGrid;
 
 import javax.swing.*;
 import java.awt.*;

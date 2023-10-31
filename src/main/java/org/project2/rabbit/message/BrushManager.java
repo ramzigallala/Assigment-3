@@ -1,28 +1,24 @@
-package org.project2.rabbit;
+package org.project2.rabbit.message;
 
-
-import org.apache.commons.lang3.SerializationUtils;
 
 import java.awt.*;
 import java.io.Serializable;
 import java.util.Comparator;
-import java.util.List;
-import java.util.TreeMap;
 import java.util.TreeSet;
 
 public class BrushManager implements Serializable {
     private static final int BRUSH_SIZE = 10;
     private static final int STROKE_SIZE = 2;
-    class SerializableFooComparator implements Serializable, Comparator<Brush> {
+    class SerializableComparator implements Serializable, Comparator<Brush> {
 
         @Override
         public int compare(Brush o1, Brush o2) {
             return o1.getConsumerTag().hashCode();
         }
     }
-    private TreeSet<Brush> brushes = new TreeSet<>(new SerializableFooComparator());
+    private TreeSet<Brush> brushes = new TreeSet<>(new SerializableComparator());
 
-    void draw(final Graphics2D g) {
+    public void draw(final Graphics2D g) {
         brushes.forEach(brush -> {
             g.setColor(new Color(brush.color));
             var circle = new java.awt.geom.Ellipse2D.Double(brush.x - BRUSH_SIZE / 2.0, brush.y - BRUSH_SIZE / 2.0, BRUSH_SIZE, BRUSH_SIZE);
@@ -34,13 +30,18 @@ public class BrushManager implements Serializable {
         });
     }
 
-    void addBrush(final Brush brush) {
-        System.out.println("aggiungo: "+brushes.add(brush)+" "+brush.getX());
+    public void addBrush(final Brush brush) {
+        //brushes.add(brush);
+        brushes.add(brush);
 
     }
 
-    void removeBrush(final Brush brush) {
-        brushes.remove(brush);
+    public void addBrushes(TreeSet<Brush> brushes){
+        brushes.addAll(brushes);
+    }
+
+    public void removeBrush(final String consumerTag) {
+        brushes.removeIf(brush -> brush.getConsumerTag().equals(consumerTag));
     }
 
     public void setBrushes(TreeSet<Brush> brushes) {

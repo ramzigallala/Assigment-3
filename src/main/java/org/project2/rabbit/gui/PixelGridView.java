@@ -1,10 +1,11 @@
-package org.project2.rabbit;
+package org.project2.rabbit.gui;
+
+import org.project2.rabbit.message.BrushManager;
+import org.project2.rabbit.message.PixelGrid;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
+import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
@@ -43,6 +44,8 @@ public class PixelGridView extends JFrame {
 		add(colorChangeButton, BorderLayout.SOUTH);
         getContentPane().add(panel);
 		this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+
+
 		hideCursor();
     }
     
