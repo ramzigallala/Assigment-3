@@ -36,21 +36,18 @@ public class PixelArtMain {
 		PixelGridView view = new PixelGridView(grid, brushManager, 600, 600);
 		clientPixelArtMain.startGetUpdate(view);
 		//aggiungo un listener per fare l'update appena viene triggerato il listener in pixelGridView
-		view.addMouseMovedListener((x, y) -> {
-			//localBrush.updatePosition(x, y);
-			//view.refresh();
-			clientPixelArtMain.updatePosition(x, y);
-			//System.out.println(x);
-		});
+		//localBrush.updatePosition(x, y);
+		//view.refresh();
+		//System.out.println(x);
+		view.addMouseMovedListener(clientPixelArtMain::updatePosition);
 
 		//aggiungo un listener per fare l'update appena viene triggerato il listener in pixelGridView
-		view.addPixelGridEventListener((x, y) -> {
-			//grid.set(x, y, localBrush.getColor());
-			view.refresh();
-		});
+		//grid.set(x, y, localBrush.getColor());
+		//view.refresh();
+		view.addPixelGridEventListener(clientPixelArtMain::updateGrid);
 
 		//aggiungo un listener per fare l'update appena viene triggerato il listener in pixelGridView
-		//view.addColorChangedListener(localBrush::setColor);
+		view.addColorChangedListener(clientPixelArtMain::updateColor);
 
 		view.display();
 	}

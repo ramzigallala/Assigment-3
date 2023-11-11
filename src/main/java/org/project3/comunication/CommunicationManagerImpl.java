@@ -35,6 +35,17 @@ public class CommunicationManagerImpl implements CommunicationManager{
     @Override
     public synchronized void updatePosition(int x, int y, int id) throws RemoteException {
         brushManager.getBrushes().get(id).updatePosition(x, y);
-        System.out.println(brushManager.getBrushes().get(id).getX());
+    }
+
+    @Override
+    public synchronized void updateColor(int color, int id) throws RemoteException {
+        brushManager.getBrushes().get(id).setColor(color);
+    }
+
+    @Override
+    public synchronized void updateGrid(int x, int y, int id) throws RemoteException {
+        int color = brushManager.getBrushes().get(id).getColor();
+        grid.set(x,y,color);
+
     }
 }
