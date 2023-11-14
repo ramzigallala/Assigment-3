@@ -4,6 +4,7 @@ package org.project3.comunication;
 import java.awt.*;
 import java.io.Serializable;
 import java.util.List;
+import java.util.Optional;
 
 public class BrushManager implements Serializable {
     private static final int BRUSH_SIZE = 10;

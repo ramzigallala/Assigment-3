@@ -4,9 +4,14 @@ import org.project3.comunication.*;
 import org.project3.gui.PixelGridView;
 
 import java.awt.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
+import java.io.IOException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
+import java.util.Optional;
 import java.util.Timer;
 import java.util.concurrent.*;
 
@@ -21,19 +26,13 @@ public class ClientPixelArtMain {
 
         try {
             Registry registry = LocateRegistry.getRegistry(host);
-            //Counter c = (Counter) registry.lookup("countObj");
             communicationManager = (CommunicationManager) registry.lookup("communicationManager");
             StartStatus startStatus = communicationManager.getStartStatus();
             id=startStatus.id();
             brushManager=startStatus.brushManager();
             grid=startStatus.grid();
             System.out.println("ID: "+id);
-            /*
-            int value = c.getValue();
-            System.out.println("> value "+value);
-            c.inc();
-            System.out.println("> value "+c.getValue());
-            */
+
         } catch (Exception e) {
             System.err.println("Client exception: " + e.toString());
             e.printStackTrace();
@@ -48,6 +47,7 @@ public class ClientPixelArtMain {
         return grid;
     }
     public void startGetUpdate(PixelGridView view){
+        view.addWindowListener(closeConnection());
         int cores = Runtime.getRuntime().availableProcessors()-1;
         ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(cores);
 
@@ -62,8 +62,6 @@ public class ClientPixelArtMain {
             }
         },0, 60, TimeUnit.MILLISECONDS);
 
-
-
     }
 
     private void updateGrid(Status status) {
@@ -75,13 +73,17 @@ public class ClientPixelArtMain {
     }
 
     private void updateBrushManager(Status status) {
-        status.brushManager().getBrushes().forEach(brush -> {
-            if(brushManager.getBrushes().stream().anyMatch(b -> b.getId()== brush.getId())){
-                brushManager.getBrushes().get(brush.getId()).updatePosition(brush.getX(), brush.getY());
-                brushManager.getBrushes().get(brush.getId()).setColor(brush.getColor());
-            }else{
-                brushManager.addBrush(brush);
-            }
+        brushManager.getBrushes().removeIf(brushOfClient -> status.brushManager().getBrushes().stream().noneMatch(brushOfServer -> brushOfClient.getId()==brushOfServer.getId()));
+        status.brushManager().getBrushes().forEach(brushOfServer -> {
+                Optional<BrushManager.Brush> brushOfClient = getBrush(brushOfServer.getId());
+                brushOfClient.ifPresent(value -> {
+                    value.updatePosition(brushOfServer.getX(), brushOfServer.getY());
+                    value.setColor(brushOfServer.getColor());
+                });
+                if(brushOfClient.isEmpty()){
+                    brushManager.addBrush(brushOfServer);
+                }
+
         });
     }
 
@@ -110,4 +112,22 @@ public class ClientPixelArtMain {
         }
     }
 
+    private WindowListener closeConnection() {
+        return new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                super.windowClosing(e);
+                try {
+                    communicationManager.removeBrush(id);
+                } catch (RemoteException ex) {
+                    throw new RuntimeException(ex);
+                }
+            }
+        };
+    }
+    private Optional<BrushManager.Brush> getBrush(int id){
+        return brushManager.getBrushes().stream()
+                .filter(brush -> brush.getId()==id)
+                .findFirst();
+    }
 }

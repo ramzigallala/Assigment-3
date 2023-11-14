@@ -9,4 +9,5 @@ public interface CommunicationManager extends Remote {
     void updatePosition(int x, int y, int id) throws RemoteException;
     void updateColor(int color, int id) throws RemoteException;
     void updateGrid(int x, int y, int id) throws RemoteException;
+    void removeBrush(int id) throws RemoteException;
 }

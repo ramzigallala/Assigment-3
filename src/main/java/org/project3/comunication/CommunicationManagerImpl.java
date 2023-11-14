@@ -34,18 +34,37 @@ public class CommunicationManagerImpl implements CommunicationManager{
 
     @Override
     public synchronized void updatePosition(int x, int y, int id) throws RemoteException {
-        brushManager.getBrushes().get(id).updatePosition(x, y);
+        brushManager.getBrushes().stream()
+                .filter(brush -> brush.getId()==id)
+                .findFirst()
+                .get()
+                .updatePosition(x,y);
     }
 
     @Override
     public synchronized void updateColor(int color, int id) throws RemoteException {
-        brushManager.getBrushes().get(id).setColor(color);
+        brushManager.getBrushes().stream()
+                .filter(brush -> brush.getId()==id)
+                .findFirst()
+                .get()
+                .setColor(color);
+
     }
 
     @Override
     public synchronized void updateGrid(int x, int y, int id) throws RemoteException {
-        int color = brushManager.getBrushes().get(id).getColor();
+        int color = brushManager.getBrushes().stream()
+                .filter(brush -> brush.getId()==id)
+                .findFirst()
+                .get()
+                .getColor();
         grid.set(x,y,color);
+
+    }
+
+    @Override
+    public synchronized void removeBrush(int id) throws RemoteException {
+        brushManager.getBrushes().removeIf(brush -> brush.getId()==id);
 
     }
 }
