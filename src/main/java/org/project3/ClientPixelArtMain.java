@@ -48,7 +48,7 @@ public class ClientPixelArtMain {
     }
     public void startGetUpdate(PixelGridView view){
         view.addWindowListener(closeConnection());
-        int cores = Runtime.getRuntime().availableProcessors()-1;
+        int cores = Runtime.getRuntime().availableProcessors()+1;
         ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(cores);
 
         scheduler.scheduleAtFixedRate(() -> {
